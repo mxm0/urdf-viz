@@ -184,6 +184,18 @@ fn add_geometry(
             }
             Ok(base)
         }
+        urdf_rs::Geometry::Capsule { radius, length } => {
+            let mut base = group.add_group();
+            let mut capsule = base.add_capsule(radius as f32, length as f32);
+            capsule.append_rotation(&na::UnitQuaternion::from_axis_angle(
+                &na::Vector3::x_axis(),
+                1.57,
+            ));
+            if let Some(color) = *opt_color {
+                base.set_color(color[0], color[1], color[2]);
+            }
+            Ok(base)
+        }
         urdf_rs::Geometry::Sphere { radius } => {
             let mut sphere = group.add_sphere(radius as f32);
             if let Some(color) = *opt_color {
